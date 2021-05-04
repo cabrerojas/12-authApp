@@ -60,6 +60,15 @@ export class AuthService {
     return this.http.get<AuthResponse>( url, { headers } )
               .pipe(
                   map( resp => {
+
+                    localStorage.setItem('token', resp.token! );
+
+                    this._usuario = {
+                      nombre: resp.nombre!,
+                      uid: resp.uid!,
+
+                    };
+
                     return resp.ok;
                   }),
                   catchError( err => of(false) )
