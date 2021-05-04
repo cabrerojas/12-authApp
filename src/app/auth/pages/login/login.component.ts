@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,18 +11,24 @@ import { Router } from '@angular/router';
 export class LoginComponent  {
 
   formLogin: FormGroup = this.fb.group({
-    correo: ['test1@test.cl', [ Validators.required, Validators.email ] ],
+    correo: ['test1@test.com', [ Validators.required, Validators.email ] ],
     contrasena: ['123456', [ Validators.required, Validators.minLength(6) ] ],
   });
 
   constructor(  private fb: FormBuilder,
-                private router: Router ) { }
+                private router: Router,
+                private authService: AuthService  ) { }
 
   login(): void {
-    console.log(this.formLogin.valid);
-    console.log(this.formLogin.value);
 
-    this.router.navigateByUrl('/dashboard');
+    const { correo, contrasena } = this.formLogin.value;
+
+    this.authService.login(correo, contrasena)
+            .subscribe( resp => {
+              console.log(resp);
+            });
+
+    // this.router.navigateByUrl('/dashboard');
   }
 
 
