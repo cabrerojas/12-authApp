@@ -52,12 +52,18 @@ export class AuthService {
   }
 
 
-  validarToken(): Observable<AuthResponse> {
+  validarToken(): Observable<boolean> {
     const url = `${this.baseUrl}/auth/renovar`;
     const headers = new HttpHeaders()
         .set('g-token', localStorage.getItem('token') || '' );
 
-    return this.http.get<AuthResponse>( url, { headers } );
+    return this.http.get<AuthResponse>( url, { headers } )
+              .pipe(
+                  map( resp => {
+                    return resp.ok;
+                  }),
+                  catchError( err => of(false) )
+              );
 
   }
 
