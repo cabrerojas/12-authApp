@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AuthResponse, Usuario } from '../interfaces/interfaces';
 import { Observable, of } from 'rxjs';
@@ -35,6 +35,9 @@ export class AuthService {
                 .pipe(
                   tap( resp => {
                     if (resp.ok){
+
+                      localStorage.setItem('token', resp.token! );
+
                       this._usuario = {
                         nombre: resp.nombre!,
                         uid: resp.uid!,
@@ -47,4 +50,15 @@ export class AuthService {
                 );
 
   }
+
+
+  validarToken(): Observable<AuthResponse> {
+    const url = `${this.baseUrl}/auth/renovar`;
+    const headers = new HttpHeaders()
+        .set('g-token', localStorage.getItem('token') || '' );
+
+    return this.http.get<AuthResponse>( url, { headers } );
+
+  }
+
 }
