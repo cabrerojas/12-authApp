@@ -24,11 +24,15 @@ export class LoginComponent  {
     const { correo, contrasena } = this.formLogin.value;
 
     this.authService.login(correo, contrasena)
-            .subscribe( resp => {
-              console.log(resp);
+            .subscribe( ok => {
+              if ( ok ) {
+                this.router.navigateByUrl('/dashboard');
+              } else {
+                // TODO: mostrar mensaje de error
+              }
+
             });
 
-    // this.router.navigateByUrl('/dashboard');
   }
 
 
