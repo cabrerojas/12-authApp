@@ -4,6 +4,7 @@ export interface AuthResponse {
     ok: boolean;
     uid?: string;
     nombre?: string;
+    correo?: string;
     token?: string;
     msg?: string;
 }
@@ -11,5 +12,5 @@ export interface AuthResponse {
 export interface Usuario {
     uid: string;
     nombre: string;
-    correo?: string;
+    correo: string;
 }
